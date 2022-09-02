@@ -1,11 +1,19 @@
 #pragma once
 
+#include <vector>
+
 #include "SDL.h"
 
 struct Vector2
 {
 	float x;
 	float y;
+};
+
+struct Ball
+{
+	Vector2 pos;
+	Vector2 vel;
 };
 
 struct Game {
@@ -42,8 +50,10 @@ private:
 	int mPaddleDir;
 	int mPaddle2Dir;
 	
+	//Vector of balls
+	std::vector<Ball> mBalls;
 	// Ball pos
-	Vector2 mBallPos;
+		//Vector2 mBallPos;
 	// Ball velocity
-	Vector2 mBallVel;
+		//Vector2 mBallVel;
 };
