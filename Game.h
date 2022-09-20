@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <array>
 #include <unordered_map>
 #include <string>
 
@@ -56,4 +57,5 @@ private:
 
 	// Game-specific
 	class Ship* mShip; // Player ship
+	class Skeleton* mSkel; // Skeleton
 };

@@ -4,8 +4,10 @@
 #include "Game.h"
 #include "Actor.h"
 #include "SpriteComponent.h"
-#include "Ship.h"
 #include "BGSpriteComponent.h"
+
+#include "Ship.h"
+#include "Skeleton.h"
 
 Game::Game()
 	: mWindow(nullptr)
@@ -110,6 +112,7 @@ void Game::ProcessInput()
 
 	// Process ship input
 	mShip->ProcessKeyboard(state);
+	mSkel->ProcessKeyboard(state);
 
 }
 
@@ -191,6 +194,9 @@ void Game::LoadData()
 	mShip = new Ship(this);
 	mShip->SetPosition(Vector2(100.0f, 384.0f));
 	mShip->SetScale(1.5f);
+
+	mSkel = new Skeleton(this);
+	mSkel->SetPosition(Vector2(100.0f, 180.0f));
 
 	// Create actor for the background (this doesn't need a subclass)
 	Actor* temp = new Actor(this);
@@ -312,7 +318,6 @@ void Game::AddSprite(SpriteComponent* sprite)
 	// Find insert point in the sorted vector
 	// (the first elem with a higher draw order than me)
 	int myDrawOrder = sprite->GetDrawOrder();
-	printf("MyDrawOrder = %i\n", myDrawOrder);
 	auto iter = mSprites.begin();
 	for (; iter != mSprites.begin(); ++iter)
 	{

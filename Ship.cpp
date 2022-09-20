@@ -15,8 +15,10 @@ Ship::Ship(Game* game)
 		game->GetTexture("Assets/Ship03.png"),
 		game->GetTexture("Assets/Ship04.png")
 	};
-	
+
 	asc->SetAnimTextures(anims);
+	asc->SetAnimNames("Idle", std::array<int,3> {0, 3, 1});
+	asc->SetCurrentAnimation("Idle");
 }
 
 void Ship::UpdateActor(float deltaTime)
