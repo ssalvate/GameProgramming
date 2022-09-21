@@ -5,6 +5,7 @@
 #include "Actor.h"
 #include "SpriteComponent.h"
 #include "BGSpriteComponent.h"
+#include "TileMapComponent.h"
 
 #include "Ship.h"
 #include "Skeleton.h"
@@ -195,6 +196,7 @@ void Game::LoadData()
 	mShip->SetPosition(Vector2(100.0f, 384.0f));
 	mShip->SetScale(1.5f);
 
+	// Create animated skeleton
 	mSkel = new Skeleton(this);
 	mSkel->SetPosition(Vector2(100.0f, 180.0f));
 
@@ -202,12 +204,11 @@ void Game::LoadData()
 	Actor* temp = new Actor(this);
 	temp->SetPosition(Vector2(512.0f, 384.0f));
 	// Create the closer background
-	BGSpriteComponent* bg = new BGSpriteComponent(temp,50);
+	/*BGSpriteComponent* bg = new BGSpriteComponent(temp, 50);
 	bg->SetScreenSize(Vector2(1024.0f, 768.0f));
 	std::vector<SDL_Texture*> bgtexs = {
 		GetTexture("Assets/Stars.png"),
 		GetTexture("Assets/Stars.png")
-		
 	};
 	bg->SetBGTextures(bgtexs);
 	bg->SetScrollSpeed(-200.0f);
@@ -220,7 +221,20 @@ void Game::LoadData()
 		GetTexture("Assets/Farback02.png")
 	};
 	bg->SetBGTextures(bgtexs);
-	bg->SetScrollSpeed(-100.0f);
+	bg->SetScrollSpeed(-100.0f);*/
+
+	// Load the Tile Maps onto the background actor
+	TileMapComponent* map1 = new TileMapComponent(temp, 90);
+	map1->SetTexture(GetTexture("Assets/Tiles.png"));
+	map1->LoadTileMap("Assets/MapLayer1.csv");
+
+	TileMapComponent* map2 = new TileMapComponent(temp, 80);
+	map2->SetTexture(GetTexture("Assets/Tiles.png"));
+	map2->LoadTileMap("Assets/MapLayer2.csv");
+
+	TileMapComponent* map3 = new TileMapComponent(temp, 70);
+	map3->SetTexture(GetTexture("Assets/Tiles.png"));
+	map3->LoadTileMap("Assets/MapLayer3.csv");
 
 }
 
