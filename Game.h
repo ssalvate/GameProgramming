@@ -57,5 +57,4 @@ private:
 
 	// Game-specific
 	class Ship* mShip; // Player ship
-	class Skeleton* mSkel; // Skeleton
 };

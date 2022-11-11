@@ -8,7 +8,7 @@
 #include "TileMapComponent.h"
 
 #include "Ship.h"
-#include "Skeleton.h"
+#include "Asteroid.h"
 
 Game::Game()
 	: mWindow(nullptr)
@@ -107,25 +107,27 @@ void Game::ProcessInput()
 			break;
 		}
 	}
+
 	// Get state of the keyboard
-	const Uint8* state = SDL_GetKeyboardState(NULL);
-	if ( state[SDL_SCANCODE_ESCAPE] ) mIsRunning = false;
+	const Uint8* keyState = SDL_GetKeyboardState(NULL);
+	if (keyState[SDL_SCANCODE_ESCAPE] ) mIsRunning = false;
 
-	// Process ship input
-	mShip->ProcessKeyboard(state);
-	mSkel->ProcessKeyboard(state);
-
+	mUpdatingActors = true;
+	for (auto actor : mActors)
+	{
+		actor->ProcessInput(keyState);
+	}
+	mUpdatingActors = false;
 }
 
 void Game::UpdateGame()
 {
 	// Wait until 16ms has elapsed since last frame
-	// Frame limiting to 60 fps
 	while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16))
 		;
 
 	// Delta time is the difference in ticks from last frame conveted to sec
-	float deltaTime = (SDL_GetTicks() - mTicksCount) / 100.0f;
+	float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
 	// Clamp max deltaTime
 	if (deltaTime > 0.05f) deltaTime = 0.05f;
 	// update tick count for next frame
@@ -168,13 +170,7 @@ void Game::UpdateGame()
 void Game::GenerateOutput()
 {
 	// 1.Set draw color to black  + (Clear backbuffer)
-	SDL_SetRenderDrawColor(
-		mRenderer,
-		0,    // R
-		0,    // G
-		0,    // B
-		255   // A
-	);
+	SDL_SetRenderDrawColor(mRenderer, 30, 30, 30, 255);
 	SDL_RenderClear(mRenderer);
 
 	// 2.Drawn entire Game screen 
@@ -194,48 +190,14 @@ void Game::LoadData()
 	// Create player ship
 	mShip = new Ship(this);
 	mShip->SetPosition(Vector2(100.0f, 384.0f));
-	mShip->SetScale(1.5f);
+	mShip->SetScale(1.0f);
 
-	// Create animated skeleton
-	mSkel = new Skeleton(this);
-	mSkel->SetPosition(Vector2(100.0f, 180.0f));
-
-	// Create actor for the background (this doesn't need a subclass)
-	Actor* temp = new Actor(this);
-	temp->SetPosition(Vector2(512.0f, 384.0f));
-	// Create the closer background
-	/*BGSpriteComponent* bg = new BGSpriteComponent(temp, 50);
-	bg->SetScreenSize(Vector2(1024.0f, 768.0f));
-	std::vector<SDL_Texture*> bgtexs = {
-		GetTexture("Assets/Stars.png"),
-		GetTexture("Assets/Stars.png")
-	};
-	bg->SetBGTextures(bgtexs);
-	bg->SetScrollSpeed(-200.0f);
-
-	// Create the "far back" background
-	bg = new BGSpriteComponent(temp);
-	bg->SetScreenSize(Vector2(1024.0f, 768.0f));
-	bgtexs = {
-		GetTexture("Assets/Farback01.png"),
-		GetTexture("Assets/Farback02.png")
-	};
-	bg->SetBGTextures(bgtexs);
-	bg->SetScrollSpeed(-100.0f);*/
-
-	// Load the Tile Maps onto the background actor
-	TileMapComponent* map1 = new TileMapComponent(temp, 90);
-	map1->SetTexture(GetTexture("Assets/Tiles.png"));
-	map1->LoadTileMap("Assets/MapLayer1.csv");
-
-	TileMapComponent* map2 = new TileMapComponent(temp, 80);
-	map2->SetTexture(GetTexture("Assets/Tiles.png"));
-	map2->LoadTileMap("Assets/MapLayer2.csv");
-
-	TileMapComponent* map3 = new TileMapComponent(temp, 70);
-	map3->SetTexture(GetTexture("Assets/Tiles.png"));
-	map3->LoadTileMap("Assets/MapLayer3.csv");
-
+	// Create asteroids
+	const int numAsteroids = 20;
+	for (int i = 0; i < numAsteroids; i++)
+	{
+		new Asteroid(this);
+	}
 }
 
 void Game::UnloadData()

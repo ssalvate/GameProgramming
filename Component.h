@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 
 class Component
 {
@@ -10,6 +11,8 @@ public:
 	virtual void Update(float deltaTime);
 
 	int GetUpdateOrder()const { return mUpdateOrder; }
+
+	virtual void ProcessInput(const uint8_t* keyState) {}
 
 protected:
 	// Owning Actor
