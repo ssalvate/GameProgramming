@@ -6,6 +6,7 @@ class Asteroid :
 {
 public:
 	Asteroid(class Game* game);
-
+private:
+	class CircleComponent* mCircle;
 };
 
