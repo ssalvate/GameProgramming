@@ -17,13 +17,13 @@ Ship::Ship(Game* game)
 	mSc->SetTexture(game->GetTexture("Assets/Ship.png"));
 
 	// Create input component and set keys/speed
-	InputComponent* ic = new InputComponent(this);
-	ic->SetForwardKey(SDL_SCANCODE_W);
-	ic->SetBackKey(SDL_SCANCODE_S);
-	ic->SetClockwiseKey(SDL_SCANCODE_A);
-	ic->SetCounterClockwiseKey(SDL_SCANCODE_D);
-	ic->SetMaxForwardSpeed(300.0f);
-	ic->SetMaxAngularSpeed(Math::TwoPi);
+	mIc = new InputComponent(this, 3.0f);
+	mIc->SetForwardKey(SDL_SCANCODE_W);
+	mIc->SetBackKey(SDL_SCANCODE_S);
+	mIc->SetClockwiseKey(SDL_SCANCODE_A);
+	mIc->SetCounterClockwiseKey(SDL_SCANCODE_D);
+	mIc->SetMaxForwardSpeed(300.0f);
+	mIc->SetMaxAngularSpeed(Math::TwoPi);
 
 	// Create circle component for collision
 	mCc = new CircleComponent(this);
@@ -41,6 +41,7 @@ void Ship::UpdateActor(float deltaTime)
 		SetState(EActive);
 		SetPosition(Vector2(512.0f, 384.0f));
 		SetRotation(0.0f);
+		mIc->SetVelocity(Vector2::Zero);
 		mRespawning = false;
 	}
 	else if (!mRespawning && mRespawnCooldown < 0)
@@ -65,6 +66,7 @@ void Ship::UpdateActor(float deltaTime)
 
 void Ship::ActorInput(const uint8_t* keyState)
 {
+	// Change sprite while using forward move
 	if (keyState[SDL_SCANCODE_W])
 	{
 		mSc->SetTexture(GetGame()->GetTexture("Assets/ShipWithThrust.png"));
@@ -73,12 +75,14 @@ void Ship::ActorInput(const uint8_t* keyState)
 	{
 		mSc->SetTexture(GetGame()->GetTexture("Assets/Ship.png"));
 	}
+	// Shoot laser
 	if (keyState[SDL_SCANCODE_SPACE] && mLaserCooldown <= 0.0f)
 	{
 		// Create a laser and set its position/rotation to this
 		Laser* laser = new Laser(GetGame());
 		laser->SetPosition(GetPosition());
 		laser->SetRotation(GetRotation());
+		laser->SetVelocity(Vector2::Normalize(GetForward()) * 800);
 
 		// Reset laser cooldown (half second)
 		mLaserCooldown = 0.5f;

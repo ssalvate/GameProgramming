@@ -13,5 +13,6 @@ private:
 	bool mRespawning;
 	class SpriteComponent* mSc;
 	class CircleComponent* mCc;
+	class InputComponent* mIc;
 };
 

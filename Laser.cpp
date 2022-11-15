@@ -14,8 +14,8 @@ Laser::Laser(Game* game)
 	sc->SetTexture(game->GetTexture("Assets/Laser.png"));
 
 	// Create new move component + set forward speed
-	MoveComponent* mc = new MoveComponent(this);
-	mc->SetForwardSpeed(800.0f);
+	mMc = new MoveComponent(this);
+	mMc->SetForwardSpeed(800.0f);
 
 	// Create circle component for collision
 	mCircle = new CircleComponent(this);

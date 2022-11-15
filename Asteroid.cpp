@@ -22,6 +22,9 @@ Asteroid::Asteroid(Game* game)
 	//Create a move component, and set a forward speed
 	MoveComponent* mc = new MoveComponent(this);
 	mc->SetForwardSpeed(150.0f);
+	Vector2 randVel = Random::GetVector(Vector2(-50.0f, -50.0f), Vector2(50.0f, 50.0f));
+	mc->SetVelocity(randVel);
+
 
 	mCircle = new CircleComponent(this);
 	mCircle->SetRadius(40.0f);
