@@ -189,7 +189,7 @@ void Game::LoadData()
 {
 	// Create player ship
 	mShip = new Ship(this);
-	mShip->SetPosition(Vector2(100.0f, 384.0f));
+	mShip->SetPosition(Vector2(1024.0f/2.0f, 768.0f/2.0f));
 	mShip->SetScale(1.0f);
 
 	// Create asteroids
@@ -287,6 +287,20 @@ SDL_Texture* Game::GetTexture(const std::string& fileName)
 	}
 
 	return tex;
+}
+
+void Game::AddAsteroid(Asteroid* ast)
+{
+	mAsteroids.emplace_back(ast);
+}
+
+void Game::RemoveAsteroid(Asteroid* ast)
+{
+	auto iter = std::find(mAsteroids.begin(), mAsteroids.end(), ast);
+	if (iter != mAsteroids.end())
+	{
+		mAsteroids.erase(iter);
+	}
 }
 
 void Game::AddSprite(SpriteComponent* sprite)

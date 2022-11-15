@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <array>
 #include <unordered_map>
 #include <string>
 
@@ -25,6 +24,11 @@ public:
 	void RemoveSprite(class SpriteComponent* sprite);
 
 	SDL_Texture* GetTexture(const std::string& fileName);
+
+	// Game-specific
+	void AddAsteroid(class Asteroid* ast);
+	void RemoveAsteroid(class Asteroid* ast);
+	std::vector<class Asteroid*>& GetAsteroids(){ return mAsteroids; }
 
 private:
 	// Helper functions for the game loop
@@ -57,4 +61,5 @@ private:
 
 	// Game-specific
 	class Ship* mShip; // Player ship
+	std::vector<class Asteroid*> mAsteroids;
 };
