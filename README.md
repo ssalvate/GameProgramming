@@ -22,7 +22,7 @@ Mini demo projects are written to demonstrate the fundamentals learned.
 <details>
 <summary>Side Scroller - Game object representation + 2D grahics techniques</summary>
 <ul>
-<li>Game objects representation models, implement Actor and Component system</li>
+<li>Game objects representation models</li>
 <li>Sprites</li>
 <li>Sprite animations</li>
 <li>Scrolling backgrounds</li>
@@ -41,7 +41,7 @@ Mini demo projects are written to demonstrate the fundamentals learned.
 </ul>
 </details>
 
-<img src="Assets/screenshots/ScreenRecord_Ch3_1.png" style=" width:513px ; height:400px">
+<img src="Assets/screenshots/ScreenRecord_Ch3_1.gif" style=" width:513px ; height:400px">
 
 ### Dependencies (based on progress)
 
