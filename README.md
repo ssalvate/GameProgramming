@@ -41,7 +41,7 @@ Mini demo projects are written to demonstrate the fundamentals learned.
 </ul>
 </details>
 
-<img src="img/Hazel_1.png" style=" width:513px ; height:400px">
+<img src="Assets/screenshots/ScreenRecord_Ch3_1.png" style=" width:513px ; height:400px">
 
 ### Dependencies (based on progress)
 
