@@ -1,11 +1,10 @@
 # Game Programming with C++
 
-Game Programming in C++; Studies + exercises from book of the same name by Sanjay Madhav 
+Studies + exercises from book of the same name by Sanjay Madhav 
 
 ## Description
 
 A long-term project that I am using to strengthen and reinforce my game programming fundamentals.
-I am also attempting to better document the projects I do for personal growth.
 This project starts with fundamental concepts of game programming in 2D and moves into 3D.
 Mini demo projects are written to demonstrate the fundamentals learned.
 
