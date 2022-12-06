@@ -19,7 +19,7 @@ Mini demo projects are written to demonstrate the fundamentals learned.
 </ul>
 </details>
 
-<img src="Assets/screenshots/ScreenRecord_Ch1_1.gif" style=" width:513px; height:400px">
+<img src="Assets/screenshots/ScreenRecord_Ch1_1.gif" style=" width:256.5px; height:200px">
 
 <details>
 <summary>Side Scroller - Game object representation + 2D grahics techniques</summary>
@@ -32,8 +32,8 @@ Mini demo projects are written to demonstrate the fundamentals learned.
 </ul>
 </details>
 
-<img src="Assets/screenshots/ScreenRecord_Ch2_1.gif" style=" width:511.5px ; height:398.5px">
-<img src="Assets/screenshots/chapter_2_screenshot.png" style=" width:513px; height:400px">
+<img src="Assets/screenshots/ScreenRecord_Ch2_1.gif" style=" width:255.75px ; height:199.25px">
+<img src="Assets/screenshots/chapter_2_screenshot.png" style=" width:256.5px; height:200px">
 
 <details>
 <summary>Asteroids - Vectors and Basic Physics</summary>
@@ -46,7 +46,7 @@ Mini demo projects are written to demonstrate the fundamentals learned.
 </ul>
 </details>
 
-<img src="Assets/screenshots/ScreenRecord_Ch3_1.gif" style=" width:513px; height:400px">
+<img src="Assets/screenshots/ScreenRecord_Ch3_1.gif" style=" width:256.5px; height:200px">
 
 ### Dependencies (based on progress)
 
