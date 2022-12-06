@@ -32,8 +32,10 @@ Mini demo projects are written to demonstrate the fundamentals learned.
 </ul>
 </details>
 
+<p float="left">
 <img src="Assets/screenshots/ScreenRecord_Ch2_1.gif" style=" width:256px ; height:200px">
 <img src="Assets/screenshots/chapter_2_screenshot.png" style=" width:256.5px; height:200px">
+</p>
 
 <details>
 <summary>Asteroids - Vectors and Basic Physics</summary>
