@@ -2,13 +2,13 @@
 
 #include "SDL_image.h"
 #include "Game.h"
-#include "Actor.h"
-#include "SpriteComponent.h"
-#include "BGSpriteComponent.h"
-#include "TileMapComponent.h"
+#include "GameActors/Actor.h"
+#include "Components/SpriteComponent.h"
+#include "Components/BGSpriteComponent.h"
+#include "Components/TileMapComponent.h"
 
-#include "Ship.h"
-#include "Asteroid.h"
+#include "GameActors/Ship.h"
+#include "GameActors/Asteroid.h"
 
 Game::Game()
 	: mWindow(nullptr)

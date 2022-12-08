@@ -1,5 +1,5 @@
 #include "CircleComponent.h"
-#include "Actor.h"
+#include "../GameActors/Actor.h"
 
 CircleComponent::CircleComponent(Actor* owner)
 	:Component(owner)

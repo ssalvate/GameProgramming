@@ -1,6 +1,6 @@
 #pragma once
 #include "Actor.h"
-#include "MoveComponent.h"
+#include "../Components/MoveComponent.h"
 
 class Laser : public Actor
 {

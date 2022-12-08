@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "Math.h"
+#include "../Math.h"
 
 class CircleComponent : public Component
 {

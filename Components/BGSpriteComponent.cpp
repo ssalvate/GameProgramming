@@ -1,5 +1,5 @@
 #include "BGSpriteComponent.h"
-#include "Actor.h"
+#include "../GameActors/Actor.h"
 
 BGSpriteComponent::BGSpriteComponent(class Actor* owner, int drawOrder)
 	: SpriteComponent(owner, drawOrder)

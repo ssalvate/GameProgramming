@@ -1,5 +1,5 @@
 #include "InputComponent.h"
-#include "Actor.h"
+#include "../GameActors/Actor.h"
 
 InputComponent::InputComponent(Actor* owner, float mass)
 	: MoveComponent(owner, mass)

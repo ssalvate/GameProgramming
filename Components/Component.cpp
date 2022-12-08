@@ -1,5 +1,5 @@
 #include "Component.h"
-#include "Actor.h"
+#include "../GameActors/Actor.h"
 
 Component::Component(Actor* owner, int updateOrder)
 	:mOwner(owner),

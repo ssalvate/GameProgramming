@@ -1,9 +1,9 @@
 #include "Asteroid.h"
-#include "Random.h"
-#include "SpriteComponent.h"
-#include "Game.h"
-#include "MoveComponent.h"
-#include "CircleComponent.h"
+#include "../Random.h"
+#include "../Components/SpriteComponent.h"
+#include "../Game.h"
+#include "../Components/MoveComponent.h"
+#include "../Components/CircleComponent.h"
 
 Asteroid::Asteroid(Game* game)
 	:Actor(game)

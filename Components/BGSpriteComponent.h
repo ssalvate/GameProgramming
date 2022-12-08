@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "SpriteComponent.h"
-#include "Math.h"
+#include "../Math.h"
 
 class BGSpriteComponent : public SpriteComponent
 {

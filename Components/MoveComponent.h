@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Component.h"
-#include "Math.h"
+#include "../Math.h"
 #include "Component.h"
 
 class MoveComponent : public Component

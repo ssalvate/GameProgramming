@@ -1,9 +1,9 @@
 #include "Ship.h"
-#include "Game.h"
-#include "SpriteComponent.h"
-#include "InputComponent.h"
+#include "../Game.h"
+#include "../Components/SpriteComponent.h"
+#include "../Components/InputComponent.h"
 #include "Laser.h"
-#include "CircleComponent.h"
+#include "../Components/CircleComponent.h"
 #include "Asteroid.h"
 
 Ship::Ship(Game* game)

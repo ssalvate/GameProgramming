@@ -1,6 +1,6 @@
 #include "TileMapComponent.h"
-#include "Game.h"
-#include "Actor.h"
+#include "../Game.h"
+#include "../GameActors/Actor.h"
 
 #include <iostream>
 #include <fstream>

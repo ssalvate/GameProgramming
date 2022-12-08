@@ -1,8 +1,8 @@
 #include "Laser.h"
-#include "SpriteComponent.h"
-#include "CircleComponent.h"
-#include "MoveComponent.h"
-#include "Game.h"
+#include "../Components/SpriteComponent.h"
+#include "../Components/CircleComponent.h"
+#include "../Components/MoveComponent.h"
+#include "../Game.h"
 #include "Asteroid.h"
 
 Laser::Laser(Game* game)

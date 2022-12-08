@@ -1,6 +1,6 @@
 #include "Skeleton.h"
-#include "AnimatedSpriteComponent.h"
-#include "Game.h"
+#include "../Components/AnimatedSpriteComponent.h"
+#include "../Game.h"
 
 Skeleton::Skeleton(Game* game)
 	: Actor(game)
