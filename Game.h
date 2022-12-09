@@ -40,8 +40,8 @@ private:
 
 	// Window created by SDL
 	SDL_Window* mWindow;
-	// 2D Renderer created by SDL
-	SDL_Renderer* mRenderer;
+	// OpenGL context - the items that OpenGL knows about, "world"
+	SDL_GLContext mContext;
 	// Number of ticks since start of game
 	Uint32 mTicksCount;
 	// Game should continue to run

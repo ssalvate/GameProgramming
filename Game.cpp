@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <glew.h>
 
 #include "SDL_image.h"
 #include "Game.h"
@@ -12,7 +13,6 @@
 
 Game::Game()
 	: mWindow(nullptr)
-	, mRenderer(nullptr)
 	, mIsRunning(true)
 	, mUpdatingActors(true)
 {
@@ -27,14 +27,30 @@ bool Game::Initialize()
 		return false;
 	}
 
-	// Create SDL window
+	// Set OpenGL attributes
+	// Use the core OpenGL profile
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	// Specify version 3.3
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+	// Request a color buffer with 8-bits per RGBA channel
+	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+	// Enable double buffering
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	// Force OpenGL to use hardware acceleration
+	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+
+	// Create OpenGL window
 	mWindow = SDL_CreateWindow(
 		"Game Programming in C++", // Window title
 		100,	// Top left x-coordinate of window
 		100,	// Top left y-coordinate of window
 		1024,	// Width of window
 		768,	// Height of window
-		0		// Flags (0 for no flags set)
+		SDL_WINDOW_OPENGL
 	);
 
 	if (!mWindow) {
@@ -42,18 +58,20 @@ bool Game::Initialize()
 		return false;
 	}
 
-	// Create SDL renderer
-	mRenderer = SDL_CreateRenderer(
-		mWindow,// window to create rendere for
-		-1,     // Usually -1
-		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
-	);
+	// Create an OpenGL contex
+	mContext = SDL_GL_CreateContext(mWindow);
 
-	if (!mRenderer)
+	// Initialize GLEW
+	glewExperimental = GL_TRUE;
+	if (glewInit() != GLEW_OK)
 	{
-		SDL_Log("Failed to create renderer: %s", SDL_GetError());
+		SDL_Log("Failed to initialize GLEW.");
 		return false;
 	}
+
+	// On some platforms, GLEW will emit a benign error code,
+	// so clear it
+	glGetError();
 
 	// Init image loader (SDL)
 	if (IMG_Init(IMG_INIT_PNG) == 0)
@@ -76,8 +94,8 @@ void Game::Shutdown()
 {
 	UnloadData();
 	IMG_Quit();
+	SDL_GL_DeleteContext(mContext);
 	SDL_DestroyWindow(mWindow);
-	SDL_DestroyRenderer(mRenderer);
 	SDL_Quit();
 }
 
@@ -169,20 +187,16 @@ void Game::UpdateGame()
 
 void Game::GenerateOutput()
 {
-	// 1.Set draw color to black  + (Clear backbuffer)
-	SDL_SetRenderDrawColor(mRenderer, 30, 30, 30, 255);
-	SDL_RenderClear(mRenderer);
+	// 1.Set clear color to gray
+	glClearColor(0.86f, 0.86f, 0.86f, 1.0f);
+	// Clear color buffer
+	glClear(GL_COLOR_BUFFER_BIT);
 
-	// 2.Drawn entire Game screen 
+	// 2.Draw the scene  TODO
 	
-	// Draw all sprite components
-	for (auto sprite : mSprites)
-	{
-		sprite->Draw(mRenderer);
-	}
+	// 3.Swap front and back buffers, which also displays the scene
+	SDL_GL_SwapWindow(mWindow);
 
-	// 3.Swap front and back buffers
-	SDL_RenderPresent(mRenderer);
 }
 
 void Game::LoadData()
@@ -275,6 +289,7 @@ SDL_Texture* Game::GetTexture(const std::string& fileName)
 		}
 
 		// Create texture from surface
+		/*
 		tex = SDL_CreateTextureFromSurface(mRenderer, surf);
 		SDL_FreeSurface(surf);
 		if (!tex)
@@ -284,6 +299,7 @@ SDL_Texture* Game::GetTexture(const std::string& fileName)
 		}
 
 		mTextures.emplace(fileName.c_str(), tex);
+		*/
 	}
 
 	return tex;
@@ -315,13 +331,7 @@ void Game::AddSprite(SpriteComponent* sprite)
 
 	}
 	// Insert elem before position of iterator
-		//printf("DrawOrder in Array\n");
 	mSprites.insert(iter, sprite);
-		/*for (auto i : mSprites) {
-			printf(" %i \n", i->GetDrawOrder());
-		}
-		printf("---End Sprite Added \n\n");*/
-
 }
 
 void Game::RemoveSprite(SpriteComponent* sprite)
