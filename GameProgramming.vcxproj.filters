@@ -45,9 +45,6 @@
     <ClCompile Include="Components\AnimatedSpriteComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Components\BGSpriteComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Components\CircleComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -63,7 +60,10 @@
     <ClCompile Include="Components\SpriteComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Components\TileMapComponent.cpp">
+    <ClCompile Include="VertexArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -95,9 +95,6 @@
     <ClInclude Include="Components\AnimatedSpriteComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Components\BGSpriteComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Components\CircleComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -113,7 +110,10 @@
     <ClInclude Include="Components\SpriteComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Components\TileMapComponent.h">
+    <ClInclude Include="VertexArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -121,5 +121,8 @@
     <None Include="README.md" />
     <None Include="SDL2.dll" />
     <None Include="SDL2_image.dll" />
+    <None Include="Shaders\Basic.vert" />
+    <None Include="Shaders\Basic.frag" />
+    <None Include="glew32.dll" />
   </ItemGroup>
 </Project>

@@ -3,11 +3,14 @@
 
 #include "SDL_image.h"
 #include "Game.h"
-#include "GameActors/Actor.h"
-#include "Components/SpriteComponent.h"
-#include "Components/BGSpriteComponent.h"
-#include "Components/TileMapComponent.h"
+#include "VertexArray.h"
+#include "Shader.h"
 
+#include "Components/SpriteComponent.h"
+//#include "Components/BGSpriteComponent.h"
+//#include "Components/TileMapComponent.h"
+
+#include "GameActors/Actor.h"
 #include "GameActors/Ship.h"
 #include "GameActors/Asteroid.h"
 
@@ -15,6 +18,7 @@ Game::Game()
 	: mWindow(nullptr)
 	, mIsRunning(true)
 	, mUpdatingActors(true)
+	, mSpriteShader(nullptr)
 {
 }
 
@@ -58,7 +62,7 @@ bool Game::Initialize()
 		return false;
 	}
 
-	// Create an OpenGL contex
+	// Create an OpenGL context
 	mContext = SDL_GL_CreateContext(mWindow);
 
 	// Initialize GLEW
@@ -73,14 +77,16 @@ bool Game::Initialize()
 	// so clear it
 	glGetError();
 
-	// Init image loader (SDL)
-	if (IMG_Init(IMG_INIT_PNG) == 0)
+	// Make sure we can create / compile shaders
+	if (!LoadShaders())
 	{
-		SDL_Log("Failed to initialize SDL_image: %s", SDL_GetError());
+		SDL_Log("Failed to load shaders");
 		return false;
 	}
 
-	
+	// Create quad for drawing sprites
+	CreateSpriteVerts();
+
 	// Init game objects
 	LoadData();
 
@@ -107,7 +113,6 @@ void Game::RunLoop()
 		UpdateGame();
 		GenerateOutput();
 	}
-
 }
 
 void Game::ProcessInput()
@@ -192,11 +197,46 @@ void Game::GenerateOutput()
 	// Clear color buffer
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	// 2.Draw the scene  TODO
+	// 2.Draw the scene
+	// Set sprite shader and vertex array objects to active
+	mSpriteShader->SetActive();
+	mSpriteVerts->SetActive();
 	
+	for (auto sprite : mSprites)
+	{
+		sprite->Draw(mSpriteShader);
+	}
+
 	// 3.Swap front and back buffers, which also displays the scene
 	SDL_GL_SwapWindow(mWindow);
+}
 
+bool Game::LoadShaders()
+{
+	mSpriteShader = new Shader();
+	if (!mSpriteShader->Load("Shaders/Basic.vert", "Shaders/Basic.frag"))
+	{
+		return false;
+	}
+	mSpriteShader->SetActive();
+}
+
+// Create rect polygon to place sprites on (a unit square)
+void Game::CreateSpriteVerts()
+{
+	float vertexBuffer[] = {
+		-0.5f,  0.5f, 0.0f, // Vertex 0
+		 0.5f,  0.5f, 0.0f,
+		 0.5f, -0.5f, 0.0f,
+		-0.5f, -0.5f, 0.0f
+	};
+
+	unsigned int indexBuffer[] = {
+		0,1,2,
+		2,3,0
+	};
+
+	mSpriteVerts = new VertexArray(vertexBuffer, 4, indexBuffer, 6);
 }
 
 void Game::LoadData()

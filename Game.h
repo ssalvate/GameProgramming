@@ -35,6 +35,8 @@ private:
 	void ProcessInput();
 	void UpdateGame();
 	void GenerateOutput();
+	bool LoadShaders();
+	void CreateSpriteVerts();
 	void LoadData();
 	void UnloadData();
 
@@ -53,10 +55,15 @@ private:
 	std::vector<class Actor*> mActors;
 	// Any pending actors
 	std::vector<class Actor*> mPendingActors;
+	
+	// Sprite shader
+	class Shader* mSpriteShader;
+	// Sprite vertex array
+	class VertexArray* mSpriteVerts;
 
 	// Map of textures loaded
 	std::unordered_map<std::string, SDL_Texture*> mTextures;
-	// All of the sprite components drawn
+	// All of the sprite components to be drawn
 	std::vector<class SpriteComponent*> mSprites;
 
 	// Game-specific

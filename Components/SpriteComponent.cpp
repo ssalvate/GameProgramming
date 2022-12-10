@@ -1,4 +1,5 @@
 #include "SpriteComponent.h"
+#include "../Shader.h"
 #include "../Game.h"
 #include "../GameActors/Actor.h"
 
@@ -17,27 +18,14 @@ SpriteComponent::~SpriteComponent()
 	mOwner->GetGame()->RemoveSprite(this);
 }
 
-void SpriteComponent::Draw(SDL_Renderer* renderer)
+void SpriteComponent::Draw(Shader* shader)
 {
-	if (mTexture)
-	{
-		SDL_Rect r;
-		// Scale the width and height by owner's scale
-		r.w = static_cast<int>(mTexWidth  * mOwner->GetScale());
-		r.h = static_cast<int>(mTexHeight * mOwner->GetScale());
-		// Center the rect around the position of the owner
-		r.x = static_cast<int>(mOwner->GetPosition().x - r.w / 2);
-		r.y = static_cast<int>(mOwner->GetPosition().y - r.h / 2);
-
-		// Draw
-		SDL_RenderCopyEx(renderer,
-			mTexture,
-			nullptr,
-			&r,
-			-Math::ToDegrees(mOwner->GetRotation()),
-			nullptr,
-			SDL_FLIP_NONE);
-	}
+	glDrawElements(
+		GL_TRIANGLES,	// Type of polugon/primitive to draw
+		6,				// Number of indices in index buffer
+		GL_UNSIGNED_INT,// Type of each index
+		nullptr			// Usually nullptr
+	);
 }
 
 void SpriteComponent::SetTexture(SDL_Texture* texture)
