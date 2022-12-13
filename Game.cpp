@@ -168,6 +168,7 @@ void Game::UpdateGame()
 	// move any pending actors to mActors
 	for (auto pending : mPendingActors)
 	{
+		pending->ComputeWorldTransform();
 		mActors.emplace_back(pending);
 	}
 	mPendingActors.clear();
@@ -214,11 +215,15 @@ void Game::GenerateOutput()
 bool Game::LoadShaders()
 {
 	mSpriteShader = new Shader();
-	if (!mSpriteShader->Load("Shaders/Basic.vert", "Shaders/Basic.frag"))
+	if (!mSpriteShader->Load("Shaders/Transform.vert", "Shaders/Basic.frag"))
 	{
 		return false;
 	}
 	mSpriteShader->SetActive();
+	// Set the view-projection matrix
+	Matrix4 viewProj = Matrix4::CreateSimpleViewProj(1024.0f, 768.0f);
+	mSpriteShader->SetMatrixUniform("uViewProj", viewProj);
+	return true;
 }
 
 // Create rect polygon to place sprites on (a unit square)
@@ -243,7 +248,7 @@ void Game::LoadData()
 {
 	// Create player ship
 	mShip = new Ship(this);
-	mShip->SetPosition(Vector2(1024.0f/2.0f, 768.0f/2.0f));
+	mShip->SetPosition(Vector2::Zero);
 	mShip->SetScale(1.0f);
 
 	// Create asteroids

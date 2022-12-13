@@ -20,6 +20,18 @@ SpriteComponent::~SpriteComponent()
 
 void SpriteComponent::Draw(Shader* shader)
 {
+	// Scale the quad by the width/height of texture
+	Matrix4 scaleMat = Matrix4::CreateScale(
+		static_cast<float>(48),
+		static_cast<float>(48),
+		1.0f
+	);
+	Matrix4 world = scaleMat * mOwner->GetWorldTransform();
+	
+	// Set world transform
+	shader->SetMatrixUniform("uWorldTransform", world);
+	
+	// Draw quad
 	glDrawElements(
 		GL_TRIANGLES,	// Type of polugon/primitive to draw
 		6,				// Number of indices in index buffer

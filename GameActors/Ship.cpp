@@ -39,7 +39,7 @@ void Ship::UpdateActor(float deltaTime)
 	{
 		printf("Respawn");
 		SetState(EActive);
-		SetPosition(Vector2(512.0f, 384.0f));
+		SetPosition(Vector2::Zero);
 		SetRotation(0.0f);
 		mIc->SetVelocity(Vector2::Zero);
 		mRespawning = false;

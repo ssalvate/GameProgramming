@@ -2,6 +2,7 @@
 
 #include <string>
 #include <glew.h>
+#include "Math.h"
 
 class Shader
 {
@@ -15,6 +16,8 @@ public:
 	void Unload();
 	// Set this as active shader program
 	void SetActive();
+	// Set a matrix uniform
+	void SetMatrixUniform(const char* name, const Matrix4& matrix);
 private:
 	// Tries to compile the specified shader
 	bool CompileShader(const std::string& fileName,

@@ -124,5 +124,6 @@
     <None Include="Shaders\Basic.vert" />
     <None Include="Shaders\Basic.frag" />
     <None Include="glew32.dll" />
+    <None Include="Shaders\Transform.vert" />
   </ItemGroup>
 </Project>
