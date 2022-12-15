@@ -1,5 +1,6 @@
 #include "AnimatedSpriteComponent.h"
 #include "Math.h"
+#include "../Texture.h"
 
 AnimatedSpriteComponent::AnimatedSpriteComponent(Actor* owner, int drawOrder)
 	: SpriteComponent(owner, drawOrder)
@@ -33,7 +34,7 @@ void AnimatedSpriteComponent::Update(float deltaTime)
 	SetTexture(mAnimTextures[static_cast<int>(mCurrFrame)]);
 }
 
-void AnimatedSpriteComponent::SetAnimTextures(const std::vector<SDL_Texture*>& textures)
+void AnimatedSpriteComponent::SetAnimTextures(const std::vector<Texture*>& textures)
 {
 	mAnimTextures = textures;
 	if (mAnimTextures.size() > 0)

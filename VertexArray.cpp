@@ -14,7 +14,7 @@ VertexArray::VertexArray(const float* verts, unsigned int numVerts,
 	glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
 	glBufferData(
 		GL_ARRAY_BUFFER,				// The active buffer type to write to
-		numVerts * 3 * sizeof(float),   // Number of bytes to copy
+		numVerts * 5 * sizeof(float),   // Number of bytes to copy
 		verts,							// Source to copy from (pointer)
 		GL_STATIC_DRAW					// How will we use this data?
 		);
@@ -34,11 +34,13 @@ VertexArray::VertexArray(const float* verts, unsigned int numVerts,
 		3,					// Number of components (3 in this case)
 		GL_FLOAT,			// Type of components
 		GL_FALSE,			// (only used for integral types)
-		sizeof(float) * 3,	// Stride (usually size of each vertex)
-		0);					// Offset from start of vertex to this attribute
-	//glEnableVertexAttribArray(1);
-	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5,
-		//reinterpret_cast<void*>(sizeof(float)*3 ));
+		sizeof(float) * 5,	// Stride (usually size of each vertex)
+		0);					// Offset ptr from start of vertex to this attribute
+	
+	// Second atrribute for UV (texture coordinates)
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5,
+		reinterpret_cast<void*>(sizeof(float)*3 ));
 }
 
 VertexArray::~VertexArray()

@@ -11,14 +11,14 @@ public:
 	~SpriteComponent();
 
 	virtual void Draw(class Shader* shader);
-	virtual void SetTexture(SDL_Texture* texture);
+	virtual void SetTexture(class Texture* texture);
 
 	int GetDrawOrder()  const { return mDrawOrder; }
 	int GetTexWidth()  const { return mTexWidth;  }
 	int GetTexHeight() const { return mTexHeight; }
 
 protected:
-	SDL_Texture* mTexture;
+	class Texture* mTexture;
 	int mDrawOrder;
 	int mTexWidth;
 	int mTexHeight;

@@ -1,15 +1,17 @@
 #include <algorithm>
 #include <glew.h>
 
+// Engine
 #include "SDL_image.h"
 #include "Game.h"
 #include "VertexArray.h"
 #include "Shader.h"
+#include "Texture.h"
 
+// Components
 #include "Components/SpriteComponent.h"
-//#include "Components/BGSpriteComponent.h"
-//#include "Components/TileMapComponent.h"
 
+// Actors
 #include "GameActors/Actor.h"
 #include "GameActors/Ship.h"
 #include "GameActors/Asteroid.h"
@@ -163,8 +165,8 @@ void Game::UpdateGame()
 	{
 		actor->Update(deltaTime);
 	}
-	
 	mUpdatingActors = false;
+
 	// move any pending actors to mActors
 	for (auto pending : mPendingActors)
 	{
@@ -215,12 +217,13 @@ void Game::GenerateOutput()
 bool Game::LoadShaders()
 {
 	mSpriteShader = new Shader();
-	if (!mSpriteShader->Load("Shaders/Transform.vert", "Shaders/Basic.frag"))
+	if (!mSpriteShader->Load("Shaders/Sprite.vert", "Shaders/Sprite.frag"))
 	{
 		return false;
 	}
 	mSpriteShader->SetActive();
-	// Set the view-projection matrix
+
+	// Set the 'simple' view-projection matrix
 	Matrix4 viewProj = Matrix4::CreateSimpleViewProj(1024.0f, 768.0f);
 	mSpriteShader->SetMatrixUniform("uViewProj", viewProj);
 	return true;
@@ -230,10 +233,10 @@ bool Game::LoadShaders()
 void Game::CreateSpriteVerts()
 {
 	float vertexBuffer[] = {
-		-0.5f,  0.5f, 0.0f, // Vertex 0
-		 0.5f,  0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		-0.5f, -0.5f, 0.0f
+		-0.5f,  0.5f, 0.0f, 0.0f, 0.0f, // Vertex 0 with UV coords, top left
+		 0.5f,  0.5f, 0.0f, 1.0f, 0.0f,	// top right
+		 0.5f, -0.5f, 0.0f,	1.0f, 1.0f,	// bottom right
+		-0.5f, -0.5f, 0.0f, 0.0f, 1.0f	// bottom left
 	};
 
 	unsigned int indexBuffer[] = {
@@ -271,7 +274,8 @@ void Game::UnloadData()
 	// Destroy textures
 	for (auto i : mTextures)
 	{
-		SDL_DestroyTexture(i.second);
+		i.second->Unload();
+		delete i.second;
 	}
 	mTextures.clear();
 
@@ -314,9 +318,9 @@ void Game::RemoveActor(Actor* actor)
 
 }
 
-SDL_Texture* Game::GetTexture(const std::string& fileName)
+Texture* Game::GetTexture(const std::string& fileName)
 {
-	SDL_Texture* tex = nullptr;
+	Texture* tex = nullptr;
 	// Is the texture already loaded?
 	auto iter = mTextures.find(fileName);
 	if (iter != mTextures.end())
@@ -325,28 +329,19 @@ SDL_Texture* Game::GetTexture(const std::string& fileName)
 	}
 	else
 	{
-		// Load from file
-		SDL_Surface* surf = IMG_Load(fileName.c_str());
-		if (!surf) 
+		// Create new texture 
+		tex = new Texture();
+		if (tex->Load(fileName))
 		{
-			SDL_Log("Failed to load texture file %s", fileName.c_str());
-			return nullptr;
+			mTextures.emplace(fileName, tex);
+		}
+		else
+		{
+			delete tex;
+			tex = nullptr;
 		}
 
-		// Create texture from surface
-		/*
-		tex = SDL_CreateTextureFromSurface(mRenderer, surf);
-		SDL_FreeSurface(surf);
-		if (!tex)
-		{
-			SDL_Log("Failed to convert surface to texture %s", fileName.c_str());
-			return nullptr;
-		}
-
-		mTextures.emplace(fileName.c_str(), tex);
-		*/
 	}
-
 	return tex;
 }
 

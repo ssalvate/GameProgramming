@@ -1,6 +1,7 @@
 #include "Skeleton.h"
 #include "../Components/AnimatedSpriteComponent.h"
 #include "../Game.h"
+#include "../Texture.h"
 
 Skeleton::Skeleton(Game* game)
 	: Actor(game)
@@ -8,7 +9,7 @@ Skeleton::Skeleton(Game* game)
 {
 	// Create animated sprite component
 	mASC = new AnimatedSpriteComponent(this);
-	std::vector<SDL_Texture*> anims = {
+	std::vector<Texture*> anims = {
 		game->GetTexture("Assets/Skeleton/Character01.png"),
 		game->GetTexture("Assets/Skeleton/Character02.png"),
 		game->GetTexture("Assets/Skeleton/Character03.png"),
