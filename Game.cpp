@@ -204,7 +204,12 @@ void Game::GenerateOutput()
 	// Set sprite shader and vertex array objects to active
 	mSpriteShader->SetActive();
 	mSpriteVerts->SetActive();
-	
+	//Enable alpha blending on the color buffer
+	glEnable(GL_BLEND);
+	glBlendFunc(		// outputColor = srcAlpha*srcColor+(1-srcAlpha)*destColor
+		GL_SRC_ALPHA,			// srcFactor is srcAlpha
+		GL_ONE_MINUS_SRC_ALPHA	// destFactor is 1 - srcAlpha
+	);
 	for (auto sprite : mSprites)
 	{
 		sprite->Draw(mSpriteShader);
