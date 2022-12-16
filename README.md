@@ -6,9 +6,9 @@ Studies + exercises from book of the same name by Sanjay Madhav
 
 A long-term project that I am using to strengthen and reinforce my game programming fundamentals.
 This project starts with fundamental concepts of game programming in 2D and moves into 3D.
-Mini demo projects are written to demonstrate the fundamentals learned.
+Demo projects are written to demonstrate the fundamentals learned.
 
-## Current progress
+## Progression
 <details>
 <summary>Pong - Core real-time game concepts </summary>
 <ul>
@@ -46,10 +46,26 @@ Mini demo projects are written to demonstrate the fundamentals learned.
 <li>Collision detection-Circle Component</li>
 </ul>
 </details>
-
 <img src="Assets/screenshots/ScreenRecord_Ch3_1.gif" style=" width:256.5px; height:200px">
 
-### Dependencies (based on progress)
+<details>
+<summary>Asteroids - Convert previous demo from SDL graphics to OpenGL</summary>
+<li>Begin transition from 2D to 3D</li>
+<li>Drawing sprites - triangles(polygons) and vertex array objects</li>
+<li>Matrices and transformations: scale - rotation - translation</li>
+<li>Object space - World space - Clip space</li>
+<li>Vertex and Fragment Shaders</li>
+<li>Texture mapping and alpha blending</li>
+</ul>
+</details>
+<img src="Assets/screenshots/ScreenRecord_Ch5_1.gif" style=" width:256.5px; height:200px">
 
-* SDL + SDL_image
+### Dependencies
+
 * Windows 10
+* Visual Studio 2022
+* SDL
+* SDL_image (Demos 1-3)
+* OpenGL 3.3 
+* GLEW
+* SOIL

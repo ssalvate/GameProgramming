@@ -2,7 +2,6 @@
 #include <glew.h>
 
 // Engine
-#include "SDL_image.h"
 #include "Game.h"
 #include "VertexArray.h"
 #include "Shader.h"
@@ -86,7 +85,7 @@ bool Game::Initialize()
 		return false;
 	}
 
-	// Create quad for drawing sprites
+	// Create quad for drawing sprites to
 	CreateSpriteVerts();
 
 	// Init game objects
@@ -101,7 +100,9 @@ bool Game::Initialize()
 void Game::Shutdown()
 {
 	UnloadData();
-	IMG_Quit();
+	delete mSpriteVerts;
+	mSpriteShader->Unload();
+	delete mSpriteShader;
 	SDL_GL_DeleteContext(mContext);
 	SDL_DestroyWindow(mWindow);
 	SDL_Quit();
@@ -195,8 +196,8 @@ void Game::UpdateGame()
 
 void Game::GenerateOutput()
 {
-	// 1.Set clear color to gray
-	glClearColor(0.86f, 0.86f, 0.86f, 1.0f);
+	// 1.Set clear color
+	glClearColor(0.30, 0.30, 0.35, 1.0f);
 	// Clear color buffer
 	glClear(GL_COLOR_BUFFER_BIT);
 
@@ -320,7 +321,6 @@ void Game::RemoveActor(Actor* actor)
 		std::iter_swap(iter, mActors.end() - 1);
 		mActors.pop_back();
 	}
-
 }
 
 Texture* Game::GetTexture(const std::string& fileName)

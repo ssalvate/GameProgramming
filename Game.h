@@ -5,6 +5,7 @@
 #include <string>
 
 #include "SDL.h"
+#include "Math.h"
 
 class Game {
 public:

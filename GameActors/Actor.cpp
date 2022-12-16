@@ -17,7 +17,7 @@ Actor::~Actor()
 {
 	mGame->RemoveActor(this);
 	// Need to delete components
-	// ~Component calls RemoveComponent, need a different style loop
+	// ~Component calls Actor::RemoveComponent, need a different style loop
 	while (!mComponents.empty())
 	{
 		delete mComponents.back();

@@ -39,7 +39,6 @@ public:
 	void ComputeWorldTransform();
 	const Matrix4& GetWorldTransform()const { return mWorldTransform; }
 
-	// Negate the y-component for SDL
 	Vector2 GetForward() const { return Vector2(Math::Cos(mRotation),Math::Sin(mRotation)); }
 
 	State GetState() const { return mState; }
@@ -64,5 +63,4 @@ private:
 	// Components held by actor
 	std::vector<class Component*> mComponents;
 	class Game* mGame;
-
 };
