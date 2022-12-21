@@ -163,17 +163,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Components\AnimatedSpriteComponent.cpp" />
     <ClCompile Include="Components\CircleComponent.cpp" />
     <ClCompile Include="Components\Component.cpp" />
-    <ClCompile Include="Components\InputComponent.cpp" />
     <ClCompile Include="Components\MoveComponent.cpp" />
     <ClCompile Include="Components\SpriteComponent.cpp" />
     <ClCompile Include="GameActors\Actor.cpp" />
-    <ClCompile Include="GameActors\Asteroid.cpp" />
-    <ClCompile Include="GameActors\Laser.cpp" />
-    <ClCompile Include="GameActors\Ship.cpp" />
-    <ClCompile Include="GameActors\Skeleton.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Math.cpp" />
@@ -183,18 +177,12 @@
     <ClCompile Include="VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Components\AnimatedSpriteComponent.h" />
     <ClInclude Include="Components\CircleComponent.h" />
     <ClInclude Include="Components\Component.h" />
-    <ClInclude Include="Components\InputComponent.h" />
     <ClInclude Include="Components\MoveComponent.h" />
     <ClInclude Include="Components\SpriteComponent.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameActors\Actor.h" />
-    <ClInclude Include="GameActors\Asteroid.h" />
-    <ClInclude Include="GameActors\Laser.h" />
-    <ClInclude Include="GameActors\Ship.h" />
-    <ClInclude Include="GameActors\Skeleton.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Shader.h" />

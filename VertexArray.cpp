@@ -25,8 +25,7 @@ VertexArray::VertexArray(const float* verts, unsigned int numVerts,
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,
 		numIndices * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
-	// Specify vertex attrinbutes
-	// (For now assume one vertex format)
+	// Specify vertex attrinbutes - 0Position 1Normals 2Texture
 	// Position is 3 floats starting at offset 0
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(
@@ -34,13 +33,17 @@ VertexArray::VertexArray(const float* verts, unsigned int numVerts,
 		3,					// Number of components (3 in this case)
 		GL_FLOAT,			// Type of components
 		GL_FALSE,			// (only used for integral types)
-		sizeof(float) * 5,	// Stride (usually size of each vertex)
+		sizeof(float) * 8,	// Stride (usually size of each vertex)
 		0);					// Offset ptr from start of vertex to this attribute
 	
-	// Second atrribute for UV (texture coordinates)
+	// Second attribute - Normals, 3 floats
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5,
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8,
 		reinterpret_cast<void*>(sizeof(float)*3 ));
+	// Third attribute - Texture Coordinates, 2 floats
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8,
+		reinterpret_cast<void*>(sizeof(float) * 6));
 }
 
 VertexArray::~VertexArray()

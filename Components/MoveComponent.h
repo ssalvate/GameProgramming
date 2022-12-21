@@ -17,8 +17,8 @@ public:
 	void SetAngularSpeed(float speed)  { mAngularSpeed = speed; }
 	void SetForwardSpeed(float speed) { mForwardSpeed = speed; }
 	
-	void AddForce(Vector2 force);
-	void SetVelocity(Vector2 vel) { mVelocity = vel; }
+	void AddForce(Vector3 force);
+	void SetVelocity(Vector3 vel) { mVelocity = vel; }
 private:
 	// Controls rotation (radians/second)
 	float mAngularSpeed;
@@ -26,8 +26,8 @@ private:
 	float mForwardSpeed;
 	
 	// Newtonian physics
-	Vector2 mSumOfForces;
-	Vector2 mVelocity;
+	Vector3 mSumOfForces;
+	Vector3 mVelocity;
 	float mMass;
 };
 

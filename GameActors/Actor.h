@@ -29,17 +29,18 @@ public:
 	virtual void ActorInput(const uint8_t* keyState);
 
 	// SetGets
-	const Vector2& GetPosition() const { return mPosition; }
-	void SetPosition(const Vector2& position) { mPosition = position;mRecomputeWorldTransform = true; }
+	const Vector3& GetPosition() const { return mPosition; }
+	void SetPosition(const Vector3& position) { mPosition = position;mRecomputeWorldTransform = true; }
 	float GetScale() const { return mScale; }
 	void SetScale(float scale) { mScale = scale; mRecomputeWorldTransform = true; }
-	float GetRotation() const { return mRotation; }
-	void SetRotation(float rotation) {mRotation = rotation; mRecomputeWorldTransform = true; }
+	const Quaternion GetRotation() const { return mRotation; }
+	void SetRotation(const Quaternion rotation) {mRotation = rotation; mRecomputeWorldTransform = true; }
 	
 	void ComputeWorldTransform();
 	const Matrix4& GetWorldTransform()const { return mWorldTransform; }
 
-	Vector2 GetForward() const { return Vector2(Math::Cos(mRotation),Math::Sin(mRotation)); }
+	// Transform initial forward direction <1,0,0> by the rotation quarternion
+	Vector3 GetForward() const { return Vector3::Transform(Vector3::UnitX, mRotation); }
 
 	State GetState() const { return mState; }
 	void SetState(State state) { mState = state; }
@@ -55,9 +56,9 @@ private:
 	
 	// Transform
 	Matrix4 mWorldTransform;
-	Vector2 mPosition; // Center position of actor
+	Vector3 mPosition; // Center position of actor
 	float mScale;      // Uniform scale of actor (1.0f for 100%)
-	float mRotation;   // Rotation angle in radians
+	Quaternion mRotation;   // Rotation angle in radians
 	bool mRecomputeWorldTransform;
 
 	// Components held by actor

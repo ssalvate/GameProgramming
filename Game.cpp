@@ -12,8 +12,6 @@
 
 // Actors
 #include "GameActors/Actor.h"
-#include "GameActors/Ship.h"
-#include "GameActors/Asteroid.h"
 
 Game::Game()
 	: mWindow(nullptr)
@@ -85,7 +83,7 @@ bool Game::Initialize()
 		return false;
 	}
 
-	// Create quad for drawing sprites to
+	// Create quad for drawing sprites onto
 	CreateSpriteVerts();
 
 	// Init game objects
@@ -239,10 +237,10 @@ bool Game::LoadShaders()
 void Game::CreateSpriteVerts()
 {
 	float vertexBuffer[] = {
-		-0.5f,  0.5f, 0.0f, 0.0f, 0.0f, // Vertex 0 with UV coords, top left
-		 0.5f,  0.5f, 0.0f, 1.0f, 0.0f,	// top right
-		 0.5f, -0.5f, 0.0f,	1.0f, 1.0f,	// bottom right
-		-0.5f, -0.5f, 0.0f, 0.0f, 1.0f	// bottom left
+		-0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,  // top left
+		 0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,  // top right
+		 0.5f, -0.5f, 0.0f,	0.0f, 0.0f, 0.0f, 1.0f, 1.0f,  // bottom right
+		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,  // bottom left
 	};
 
 	unsigned int indexBuffer[] = {
@@ -255,17 +253,7 @@ void Game::CreateSpriteVerts()
 
 void Game::LoadData()
 {
-	// Create player ship
-	mShip = new Ship(this);
-	mShip->SetPosition(Vector2::Zero);
-	mShip->SetScale(1.0f);
-
-	// Create asteroids
-	const int numAsteroids = 20;
-	for (int i = 0; i < numAsteroids; i++)
-	{
-		new Asteroid(this);
-	}
+	// Game Specific Code
 }
 
 void Game::UnloadData()
@@ -350,19 +338,6 @@ Texture* Game::GetTexture(const std::string& fileName)
 	return tex;
 }
 
-void Game::AddAsteroid(Asteroid* ast)
-{
-	mAsteroids.emplace_back(ast);
-}
-
-void Game::RemoveAsteroid(Asteroid* ast)
-{
-	auto iter = std::find(mAsteroids.begin(), mAsteroids.end(), ast);
-	if (iter != mAsteroids.end())
-	{
-		mAsteroids.erase(iter);
-	}
-}
 
 void Game::AddSprite(SpriteComponent* sprite)
 {

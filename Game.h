@@ -27,9 +27,6 @@ public:
 	class Texture* GetTexture(const std::string& fileName);
 
 	// Game-specific
-	void AddAsteroid(class Asteroid* ast);
-	void RemoveAsteroid(class Asteroid* ast);
-	std::vector<class Asteroid*>& GetAsteroids(){ return mAsteroids; }
 
 private:
 	// Helper functions for the game loop
@@ -68,6 +65,4 @@ private:
 	std::vector<class SpriteComponent*> mSprites;
 
 	// Game-specific
-	class Ship* mShip; // Player ship
-	std::vector<class Asteroid*> mAsteroids;
 };

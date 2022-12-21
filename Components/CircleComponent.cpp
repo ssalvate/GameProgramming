@@ -7,7 +7,7 @@ CircleComponent::CircleComponent(Actor* owner)
 {
 }
 
-const Vector2& CircleComponent::GetCenter() const
+const Vector3& CircleComponent::GetCenter() const
 {
 	return mOwner->GetPosition();
 }
@@ -20,7 +20,7 @@ float CircleComponent::GetRadius() const
 bool Intersect(const CircleComponent& a, const CircleComponent& b)
 {
 	// calculate distance squared
-	Vector2 diff = a.GetCenter() - b.GetCenter();
+	Vector3 diff = a.GetCenter() - b.GetCenter();
 	float distSq = diff.LengthSq();
 
 	// Calculate sum of radii squared

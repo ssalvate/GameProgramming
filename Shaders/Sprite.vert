@@ -7,9 +7,10 @@ uniform mat4 uViewProj;
 // Simple view-projection == top-right coord-> 512,384
 // bottom-left-> -512,-384 , when window is 1024x768
 
-// Attribute 0 is position, 1 is tex coords
+// Attribute 0 is position, 1 is normal, 2 is tex coords
 layout (location = 0) in vec3 inPosition;
-layout (location = 1) in vec2 inTexCoord;
+layout (location = 1) in vec3 inNormal;
+layout (location = 2) in vec2 inTexCoord;
 
 // Texture coordinates for output
 out vec2 fragTexCoord;
