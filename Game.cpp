@@ -1,23 +1,18 @@
 #include <algorithm>
-#include <glew.h>
 
 // Engine
 #include "Game.h"
-#include "VertexArray.h"
-#include "Shader.h"
-#include "Texture.h"
-
+#include "Renderer.h"
+// Actors
+#include "GameActors/Actor.h"
 // Components
 #include "Components/SpriteComponent.h"
 
-// Actors
-#include "GameActors/Actor.h"
 
 Game::Game()
-	: mWindow(nullptr)
+	: mRenderer(nullptr)
 	, mIsRunning(true)
-	, mUpdatingActors(true)
-	, mSpriteShader(nullptr)
+	, mUpdatingActors(false)
 {
 }
 
@@ -30,61 +25,15 @@ bool Game::Initialize()
 		return false;
 	}
 
-	// Set OpenGL attributes
-	// Use the core OpenGL profile
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	// Specify version 3.3
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-	// Request a color buffer with 8-bits per RGBA channel
-	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
-	// Enable double buffering
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	// Force OpenGL to use hardware acceleration
-	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
-
-	// Create OpenGL window
-	mWindow = SDL_CreateWindow(
-		"Game Programming in C++", // Window title
-		100,	// Top left x-coordinate of window
-		100,	// Top left y-coordinate of window
-		1024,	// Width of window
-		768,	// Height of window
-		SDL_WINDOW_OPENGL
-	);
-
-	if (!mWindow) {
-		SDL_Log("Failed to create window: %s", SDL_GetError());
-		return false;
-	}
-
-	// Create an OpenGL context
-	mContext = SDL_GL_CreateContext(mWindow);
-
-	// Initialize GLEW
-	glewExperimental = GL_TRUE;
-	if (glewInit() != GLEW_OK)
+	// Create the Renderer
+	mRenderer = new Renderer(this);
+	if (!mRenderer->Initialize(1024.0f, 768.0f))
 	{
-		SDL_Log("Failed to initialize GLEW.");
+		SDL_Log("Failed to initialize renderer");
+		delete mRenderer;
+		mRenderer = nullptr;
 		return false;
 	}
-
-	// On some platforms, GLEW will emit a benign error code,
-	// so clear it
-	glGetError();
-
-	// Make sure we can create / compile shaders
-	if (!LoadShaders())
-	{
-		SDL_Log("Failed to load shaders");
-		return false;
-	}
-
-	// Create quad for drawing sprites onto
-	CreateSpriteVerts();
 
 	// Init game objects
 	LoadData();
@@ -98,11 +47,10 @@ bool Game::Initialize()
 void Game::Shutdown()
 {
 	UnloadData();
-	delete mSpriteVerts;
-	mSpriteShader->Unload();
-	delete mSpriteShader;
-	SDL_GL_DeleteContext(mContext);
-	SDL_DestroyWindow(mWindow);
+	if (mRenderer)
+	{
+		mRenderer->Shutdown();
+	}
 	SDL_Quit();
 }
 
@@ -136,12 +84,10 @@ void Game::ProcessInput()
 	const Uint8* keyState = SDL_GetKeyboardState(NULL);
 	if (keyState[SDL_SCANCODE_ESCAPE] ) mIsRunning = false;
 
-	mUpdatingActors = true;
 	for (auto actor : mActors)
 	{
 		actor->ProcessInput(keyState);
 	}
-	mUpdatingActors = false;
 }
 
 void Game::UpdateGame()
@@ -194,61 +140,7 @@ void Game::UpdateGame()
 
 void Game::GenerateOutput()
 {
-	// 1.Set clear color
-	glClearColor(0.30, 0.30, 0.35, 1.0f);
-	// Clear color buffer
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	// 2.Draw the scene
-	// Set sprite shader and vertex array objects to active
-	mSpriteShader->SetActive();
-	mSpriteVerts->SetActive();
-	//Enable alpha blending on the color buffer
-	glEnable(GL_BLEND);
-	glBlendFunc(		// outputColor = srcAlpha*srcColor+(1-srcAlpha)*destColor
-		GL_SRC_ALPHA,			// srcFactor is srcAlpha
-		GL_ONE_MINUS_SRC_ALPHA	// destFactor is 1 - srcAlpha
-	);
-	for (auto sprite : mSprites)
-	{
-		sprite->Draw(mSpriteShader);
-	}
-
-	// 3.Swap front and back buffers, which also displays the scene
-	SDL_GL_SwapWindow(mWindow);
-}
-
-bool Game::LoadShaders()
-{
-	mSpriteShader = new Shader();
-	if (!mSpriteShader->Load("Shaders/Sprite.vert", "Shaders/Sprite.frag"))
-	{
-		return false;
-	}
-	mSpriteShader->SetActive();
-
-	// Set the 'simple' view-projection matrix
-	Matrix4 viewProj = Matrix4::CreateSimpleViewProj(1024.0f, 768.0f);
-	mSpriteShader->SetMatrixUniform("uViewProj", viewProj);
-	return true;
-}
-
-// Create rect polygon to place sprites on (a unit square)
-void Game::CreateSpriteVerts()
-{
-	float vertexBuffer[] = {
-		-0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,  // top left
-		 0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,  // top right
-		 0.5f, -0.5f, 0.0f,	0.0f, 0.0f, 0.0f, 1.0f, 1.0f,  // bottom right
-		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,  // bottom left
-	};
-
-	unsigned int indexBuffer[] = {
-		0,1,2,
-		2,3,0
-	};
-
-	mSpriteVerts = new VertexArray(vertexBuffer, 4, indexBuffer, 6);
+	mRenderer->Draw();
 }
 
 void Game::LoadData()
@@ -265,14 +157,10 @@ void Game::UnloadData()
 		delete mActors.back();
 	}
 
-	// Destroy textures
-	for (auto i : mTextures)
+	if (mRenderer)
 	{
-		i.second->Unload();
-		delete i.second;
+		mRenderer->UnloadData();
 	}
-	mTextures.clear();
-
 }
 
 void Game::AddActor(Actor* actor)
@@ -309,54 +197,4 @@ void Game::RemoveActor(Actor* actor)
 		std::iter_swap(iter, mActors.end() - 1);
 		mActors.pop_back();
 	}
-}
-
-Texture* Game::GetTexture(const std::string& fileName)
-{
-	Texture* tex = nullptr;
-	// Is the texture already loaded?
-	auto iter = mTextures.find(fileName);
-	if (iter != mTextures.end())
-	{
-		tex = iter->second;
-	}
-	else
-	{
-		// Create new texture 
-		tex = new Texture();
-		if (tex->Load(fileName))
-		{
-			mTextures.emplace(fileName, tex);
-		}
-		else
-		{
-			delete tex;
-			tex = nullptr;
-		}
-
-	}
-	return tex;
-}
-
-
-void Game::AddSprite(SpriteComponent* sprite)
-{
-	// Find insert point in the sorted vector
-	// (the first elem with a higher draw order than me)
-	int myDrawOrder = sprite->GetDrawOrder();
-	auto iter = mSprites.begin();
-	for (; iter != mSprites.begin(); ++iter)
-	{
-		if (myDrawOrder < (*iter)->GetDrawOrder()) break;
-
-	}
-	// Insert elem before position of iterator
-	mSprites.insert(iter, sprite);
-}
-
-void Game::RemoveSprite(SpriteComponent* sprite)
-{
-	// We can't swap because it braks ordering
-	auto iter = std::find(mSprites.begin(), mSprites.end(), sprite);
-	mSprites.erase(iter);
 }

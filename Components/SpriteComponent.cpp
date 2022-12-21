@@ -2,6 +2,7 @@
 #include "../Shader.h"
 #include "../Texture.h"
 #include "../Game.h"
+#include "../Renderer.h"
 #include "../GameActors/Actor.h"
 
 SpriteComponent::SpriteComponent(Actor* owner, int drawOrder )
@@ -11,12 +12,12 @@ SpriteComponent::SpriteComponent(Actor* owner, int drawOrder )
 	,mTexWidth(0)
 	,mTexHeight(0)
 {
-	mOwner->GetGame()->AddSprite(this);
+	mOwner->GetGame()->GetRenderer()->AddSprite(this);
 }
 
 SpriteComponent::~SpriteComponent()
 {
-	mOwner->GetGame()->RemoveSprite(this);
+	mOwner->GetGame()->GetRenderer()->RemoveSprite(this);
 }
 
 void SpriteComponent::Draw(Shader* shader)
@@ -30,16 +31,17 @@ void SpriteComponent::Draw(Shader* shader)
 			1.0f
 		);
 		Matrix4 world = scaleMat * mOwner->GetWorldTransform();
+		
+		// Since all sprites use the same shader/vertices,
+		// the game first sets them active before any sprite draws
 
 		// Set world transform
 		shader->SetMatrixUniform("uWorldTransform", world);
-
 		// Set current texture
 		mTexture->SetActive();
-
 		// Draw quad
 		glDrawElements(
-			GL_TRIANGLES,	// Type of polugon/primitive to draw
+			GL_TRIANGLES,	// Type of polygon/primitive to draw
 			6,				// Number of indices in index buffer
 			GL_UNSIGNED_INT,// Type of each index
 			nullptr			// Usually nullptr

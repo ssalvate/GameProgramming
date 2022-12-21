@@ -11,58 +11,36 @@ class Game {
 public:
 	Game();
 	
-	// Initialize the game
 	bool Initialize();
-	// Runs the game loop until the game is over
 	void RunLoop();
-	// Shutdown the game
 	void Shutdown();
 
 	void AddActor(class Actor* actor);
 	void RemoveActor(class Actor* actor);
 
-	void AddSprite(class SpriteComponent* sprite);
-	void RemoveSprite(class SpriteComponent* sprite);
-
-	class Texture* GetTexture(const std::string& fileName);
-
-	// Game-specific
+	class Renderer* GetRenderer() { return mRenderer; }
 
 private:
 	// Helper functions for the game loop
 	void ProcessInput();
 	void UpdateGame();
 	void GenerateOutput();
-	bool LoadShaders();
-	void CreateSpriteVerts();
 	void LoadData();
 	void UnloadData();
 
-	// Window created by SDL
-	SDL_Window* mWindow;
-	// OpenGL context - the items that OpenGL knows about, "world"
-	SDL_GLContext mContext;
 	// Number of ticks since start of game
 	Uint32 mTicksCount;
 	// Game should continue to run
 	bool mIsRunning;
-	// Track if we're updating actors right now
-	bool mUpdatingActors;
 
 	// All actors in game
 	std::vector<class Actor*> mActors;
 	// Any pending actors
 	std::vector<class Actor*> mPendingActors;
-	
-	// Sprite shader
-	class Shader* mSpriteShader;
-	// Sprite vertex array
-	class VertexArray* mSpriteVerts;
+	// Track if we're updating actors right now
+	bool mUpdatingActors;
 
-	// Map of textures loaded
-	std::unordered_map<std::string, class Texture*> mTextures;
-	// All of the sprite components to be drawn
-	std::vector<class SpriteComponent*> mSprites;
+	class Renderer* mRenderer;
 
 	// Game-specific
 };
