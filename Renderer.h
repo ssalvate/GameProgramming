@@ -12,6 +12,7 @@ class Renderer
 public:
 	Renderer(class Game* game);
 	~Renderer();
+
 	// initialize and shutdown renderer
 	bool Initialize(float screenWidth, float screenHeight);
 	void Shutdown();
@@ -22,8 +23,17 @@ public:
 
 	void AddSprite(class SpriteComponent* sprite);
 	void RemoveSprite(class SpriteComponent* sprite);
+
+	void AddMeshComp(class MeshComponent* mesh);
+	void RemoveMeshComp(class MeshComponent* mesh);
+
 	class Texture* GetTexture(const std::string& fileName);
 	class Mesh* GetMesh(const std::string& fileName);
+	
+	void SetViewMatrix(const Matrix4& view) { mView = view; }
+
+	float GetScreenWidth() const { return mScreenWidth; }
+	float GetScreenHeight() const { return mScreenHeight; }
 private:
 	bool LoadShaders();
 	void CreateSpriteVerts();
@@ -37,7 +47,7 @@ private:
 	std::vector<class SpriteComponent*> mSprites;
 
 	// All mesh components drawn
-	
+	std::vector<class MeshComponent*> mMeshComps;
 
 	// Game
 	class Game* mGame;
@@ -51,8 +61,8 @@ private:
 	class Shader* mMeshShader;
 
 	// View/projection for 3D shaders
-	
-
+	Matrix4 mView;
+	Matrix4 mProjection;
 	// Width/height of screen
 	float mScreenWidth;
 	float mScreenHeight;
@@ -65,4 +75,3 @@ private:
 	// OpenGL context
 	SDL_GLContext mContext;
 };
-

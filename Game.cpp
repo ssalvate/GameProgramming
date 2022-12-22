@@ -2,12 +2,14 @@
 
 // Engine
 #include "Game.h"
+#include "Mesh.h"
 #include "Renderer.h"
 // Actors
 #include "GameActors/Actor.h"
+#include "GameActors/CameraActor.h"
 // Components
+#include "Components/MeshComponent.h"
 #include "Components/SpriteComponent.h"
-
 
 Game::Game()
 	: mRenderer(nullptr)
@@ -44,6 +46,16 @@ bool Game::Initialize()
 	return true;
 }
 
+void Game::RunLoop() 
+{
+	while (mIsRunning)
+	{
+		ProcessInput();
+		UpdateGame();
+		GenerateOutput();
+	}
+}
+
 void Game::Shutdown()
 {
 	UnloadData();
@@ -54,15 +66,6 @@ void Game::Shutdown()
 	SDL_Quit();
 }
 
-void Game::RunLoop() 
-{
-	while (mIsRunning)
-	{
-		ProcessInput();
-		UpdateGame();
-		GenerateOutput();
-	}
-}
 
 void Game::ProcessInput()
 {
@@ -146,6 +149,26 @@ void Game::GenerateOutput()
 void Game::LoadData()
 {
 	// Game Specific Code
+	Actor* a = new Actor(this);
+	a->SetPosition(Vector3(200.0f, 75.0f, 0.0f));
+	a->SetScale(100.0f);
+	// Textured side is top when first loaded, with text facing away
+	// Rotate around z by 180d + 45d, 
+	// then rotate around z -90d
+	Quaternion q(Vector3::UnitY, -Math::PiOver2); 
+	q = Quaternion::Concatenate(q, Quaternion(Vector3::UnitZ, Math::Pi + Math::Pi / 4.0f));
+	a->SetRotation(q);
+	MeshComponent* mc = new MeshComponent(a);
+	mc->SetMesh(mRenderer->GetMesh("Assets/Cube.gpmesh"));
+
+	a = new Actor(this);
+	a->SetPosition(Vector3(200.0f, -75.0f, 0.0f));
+	a->SetScale(3.0f);
+	mc = new MeshComponent(a);
+	mc->SetMesh(mRenderer->GetMesh("Assets/Sphere.gpmesh"));
+
+	// Camera actor
+	mCameraActor = new CameraActor(this);
 }
 
 void Game::UnloadData()

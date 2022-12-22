@@ -1,6 +1,7 @@
 #include "Mesh.h"
 #include "Math.h"
 #include "SDL_log.h"
+#include "Texture.h"
 #include "Renderer.h"
 #include "VertexArray.h"
 #include "rapidjson/document.h"
@@ -33,6 +34,7 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer)
 	std::string contents = fileStream.str();
 	rapidjson::StringStream jsonStr(contents.c_str());
 	rapidjson::Document doc;
+	doc.ParseStream(jsonStr);
 	if (!doc.IsObject())
 	{
 		SDL_Log("Mesh %s is not valid json", fileName.c_str());

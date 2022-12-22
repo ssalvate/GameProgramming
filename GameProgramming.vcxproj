@@ -165,9 +165,11 @@
   <ItemGroup>
     <ClCompile Include="Components\CircleComponent.cpp" />
     <ClCompile Include="Components\Component.cpp" />
+    <ClCompile Include="Components\MeshComponent.cpp" />
     <ClCompile Include="Components\MoveComponent.cpp" />
     <ClCompile Include="Components\SpriteComponent.cpp" />
     <ClCompile Include="GameActors\Actor.cpp" />
+    <ClCompile Include="GameActors\CameraActor.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Math.cpp" />
@@ -181,10 +183,12 @@
   <ItemGroup>
     <ClInclude Include="Components\CircleComponent.h" />
     <ClInclude Include="Components\Component.h" />
+    <ClInclude Include="Components\MeshComponent.h" />
     <ClInclude Include="Components\MoveComponent.h" />
     <ClInclude Include="Components\SpriteComponent.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameActors\Actor.h" />
+    <ClInclude Include="GameActors\CameraActor.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Random.h" />
@@ -194,15 +198,28 @@
     <ClInclude Include="VertexArray.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Cube.gpmesh" />
+    <None Include="Assets\Plane.gpmesh" />
+    <None Include="Assets\Sphere.gpmesh" />
     <None Include="glew32.dll" />
     <None Include="README.md" />
     <None Include="SDL2.dll" />
     <None Include="SDL2_image.dll" />
     <None Include="Shaders\Basic.frag" />
     <None Include="Shaders\Basic.vert" />
+    <None Include="Shaders\BasicMesh.frag" />
+    <None Include="Shaders\BasicMesh.vert" />
     <None Include="Shaders\Sprite.frag" />
     <None Include="Shaders\Sprite.vert" />
     <None Include="Shaders\Transform.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Cube.png" />
+    <Image Include="Assets\Default.png" />
+    <Image Include="Assets\HealthBar.png" />
+    <Image Include="Assets\Plane.png" />
+    <Image Include="Assets\Radar.png" />
+    <Image Include="Assets\Sphere.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

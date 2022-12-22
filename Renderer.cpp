@@ -4,6 +4,7 @@
 #include "Mesh.h"
 #include "VertexArray.h"
 #include "Shader.h"
+#include "Components/MeshComponent.h"
 #include "Components/SpriteComponent.h"
 
 Renderer::Renderer(Game* game)
@@ -33,6 +34,7 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	// Enable double buffering
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	// Force OpenGL to use hardware acceleration
@@ -43,8 +45,8 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 		"Game Programming in C++", // Window title
 		100,	// Top left x-coordinate of window
 		100,	// Top left y-coordinate of window
-		1024,	// Width of window
-		768,	// Height of window
+		static_cast<int>(mScreenWidth),	// Width of window
+		static_cast<int>(mScreenHeight),// Height of window
 		SDL_WINDOW_OPENGL
 	);
 	if (!mWindow) {
@@ -85,6 +87,8 @@ void Renderer::Shutdown()
 	delete mSpriteVerts;
 	mSpriteShader->Unload();
 	delete mSpriteShader;
+	mMeshShader->Unload();
+	delete mMeshShader;
 	SDL_GL_DeleteContext(mContext);
 	SDL_DestroyWindow(mWindow);
 }
@@ -111,20 +115,35 @@ void Renderer::UnloadData()
 void Renderer::Draw()
 {
 	// 1.Set clear color
-	glClearColor(0.30, 0.30, 0.35, 1.0f);
-	// Clear color buffer
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	// Clear color buffer + depth buffer
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// 2.Draw the scene
+	
+	//	a.Draw mesh components
+	// Enable depth buffering/disable alpha blend
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
+	// Set the mesh shader active
+	mMeshShader->SetActive();
+	// Update the view-proj matrix
+	mMeshShader->SetMatrixUniform(" uViewProj", mView * mProjection);
+	for (auto mc : mMeshComps)
+	{
+		mc->Draw(mMeshShader);
+	}
+
+	//	b.Draw all sprite components
+	// Disable depth buffering
+	glDisable(GL_DEPTH_TEST);
+	//Enable alpha blending on the color buffer
+	glEnable(GL_BLEND);
+	glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+	glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
 	// Set sprite shader and vertex array objects to active
 	mSpriteShader->SetActive();
 	mSpriteVerts->SetActive();
-	//Enable alpha blending on the color buffer
-	glEnable(GL_BLEND);
-	glBlendFunc(		// outputColor = srcAlpha*srcColor+(1-srcAlpha)*destColor
-		GL_SRC_ALPHA,			// srcFactor is srcAlpha
-		GL_ONE_MINUS_SRC_ALPHA	// destFactor is 1 - srcAlpha
-	);
 	for (auto sprite : mSprites)
 	{
 		sprite->Draw(mSpriteShader);
@@ -156,6 +175,17 @@ void Renderer::RemoveSprite(SpriteComponent* sprite)
 	mSprites.erase(iter);
 }
 
+void Renderer::AddMeshComp(MeshComponent* mesh)
+{
+	mMeshComps.emplace_back(mesh);
+}
+
+void Renderer::RemoveMeshComp(MeshComponent* mesh)
+{
+	auto iter = std::find(mMeshComps.begin(), mMeshComps.end(), mesh);
+	mMeshComps.erase(iter);
+}
+
 Texture* Renderer::GetTexture(const std::string& fileName)
 {
 	Texture* tex = nullptr;
@@ -185,7 +215,26 @@ Texture* Renderer::GetTexture(const std::string& fileName)
 
 Mesh* Renderer::GetMesh(const std::string& fileName)
 {
-	return nullptr;
+	Mesh* m = nullptr;
+	auto iter = mMeshes.find(fileName);
+	if (iter != mMeshes.end())
+	{
+		m = iter->second;
+	}
+	else
+	{
+		m = new Mesh();
+		if (m->Load(fileName, this))
+		{
+			mMeshes.emplace(fileName, m);
+		}
+		else
+		{
+			delete m;
+			m = nullptr;
+		}
+	}
+	return m;
 }
 
 bool Renderer::LoadShaders()
@@ -201,6 +250,28 @@ bool Renderer::LoadShaders()
 	Matrix4 viewProj = Matrix4::CreateSimpleViewProj(mScreenWidth,mScreenHeight);
 	mSpriteShader->SetMatrixUniform("uViewProj", viewProj);
 	
+	// Create basic mesh shader
+	mMeshShader = new Shader();
+	if (!mMeshShader->Load("Shaders/BasicMesh.vert", "Shaders/BasicMesh.frag"))
+	{
+		return false;
+	}
+
+	mMeshShader->SetActive();
+	// Set the view-projection matrix
+	mView = Matrix4::CreateLookAt(
+		Vector3::Zero,	// Camera Position
+		Vector3::UnitX, // Target Position
+		Vector3::UnitZ	// Up
+	);
+	mProjection = Matrix4::CreatePerspectiveFOV(
+		Math::ToRadians(70.0f), // Horizontal FOV
+		mScreenWidth,			// Width of view
+		mScreenHeight,			// Height of view
+		25.0f,					// Near plane distance
+		1000.0f					// Far plane distance
+	);
+	mMeshShader->SetMatrixUniform("uViewProj", mView * mProjection);
 	return true;
 }
 

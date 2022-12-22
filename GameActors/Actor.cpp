@@ -35,12 +35,6 @@ void Actor::Update(float deltaTime)
 		// Update transform twice in case it changes in the interim
 		ComputeWorldTransform();
 	}
-
-	// If the actor is paused, don't update the components
-	if (mState == EPaused) 
-	{
-		UpdateActor(deltaTime);
-	}
 }
 
 void Actor::UpdateComponents(float deltaTime)
