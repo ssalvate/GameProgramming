@@ -12,6 +12,7 @@
 Mesh::Mesh()
 	: mVertexArray(nullptr)
 	, mRadius(0.0f)
+	, mSpecPower(100.0f)
 {
 }
 

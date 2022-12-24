@@ -24,7 +24,7 @@ public:
 private:
 	// Textures associated with mesh
 	std::vector<class Texture*> mTextures;
-	// Textures asscicated with mesh
+	// Vertex Array asscicated with mesh
 	class VertexArray* mVertexArray;
 	// Name of shader specified by mesh
 	std::string mShaderName;

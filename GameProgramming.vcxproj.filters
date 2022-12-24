@@ -126,6 +126,8 @@
     <None Include="Assets\Cube.gpmesh" />
     <None Include="Assets\Plane.gpmesh" />
     <None Include="Assets\Sphere.gpmesh" />
+    <None Include="Shaders\Phong.frag" />
+    <None Include="Shaders\Phong.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Cube.png">
