@@ -63,6 +63,9 @@
     <ClCompile Include="GameActors\CameraActor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameActors\PlaneActor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -108,6 +111,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameActors\CameraActor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameActors\PlaneActor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

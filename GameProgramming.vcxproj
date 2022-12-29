@@ -170,6 +170,7 @@
     <ClCompile Include="Components\SpriteComponent.cpp" />
     <ClCompile Include="GameActors\Actor.cpp" />
     <ClCompile Include="GameActors\CameraActor.cpp" />
+    <ClCompile Include="GameActors\PlaneActor.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Math.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameActors\Actor.h" />
     <ClInclude Include="GameActors\CameraActor.h" />
+    <ClInclude Include="GameActors\PlaneActor.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Random.h" />

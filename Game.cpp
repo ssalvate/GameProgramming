@@ -5,6 +5,7 @@
 #include "Renderer.h"
 // Actors
 #include "GameActors/Actor.h"
+#include "GameActors/PlaneActor.h"
 #include "GameActors/CameraActor.h"
 // Components
 #include "Components/MeshComponent.h"
@@ -147,7 +148,9 @@ void Game::GenerateOutput()
 
 void Game::LoadData()
 {
-	// Game Specific Code
+	// ---- Game Specific Code ----
+	
+	// Cube
 	Actor* a = new Actor(this);
 	a->SetPosition(Vector3(200.0f, 75.0f, 0.0f));
 	a->SetScale(100.0f);
@@ -159,7 +162,8 @@ void Game::LoadData()
 	a->SetRotation(q);
 	MeshComponent* mc = new MeshComponent(a);
 	mc->SetMesh(mRenderer->GetMesh("Assets/Cube.gpmesh"));
-
+	
+	// Spehere
 	a = new Actor(this);
 	a->SetPosition(Vector3(200.0f, -75.0f, 0.0f));
 	a->SetScale(3.0f);
@@ -175,6 +179,54 @@ void Game::LoadData()
 
 	// Camera actor
 	mCameraActor = new CameraActor(this);
+
+	// -- Map tiles--
+	// Ground
+	const float start = -1250.0f;
+	const float size = 250.0f;
+	for (int i = 0; i < 10; i++)
+	{
+		for (int j = 0; j < 10; j++)
+		{
+			a = new PlaneActor(this);
+			a->SetPosition(Vector3(start + i * size, start + j * size, -100.0f));
+		}
+	}
+	// Left/Right walls
+	q = Quaternion(Vector3::UnitX, Math::PiOver2); // 90d rotate around X
+	for (int i = 0; i < 10; i++)
+	{
+		a = new PlaneActor(this); // L
+		a->SetPosition(Vector3(start + i * size, start - size, 0.0f));
+		a->SetRotation(q);
+
+		a = new PlaneActor(this); // R
+		a->SetPosition(Vector3(start + i * size, start + size * 10, 0.0f));
+		a->SetRotation(q);
+	}
+
+	// Forward/Back Walls
+	q = Quaternion::Concatenate(q, Quaternion(Vector3::UnitZ, Math::PiOver2)); // 90d around X then Z
+	for (int i = 0; i < 10; i++)
+	{
+		a = new PlaneActor(this); // F
+		a->SetPosition(Vector3(-start+size, start + size * i, 0.0f));
+		a->SetRotation(q);
+	}
+
+	// -- UI elements --
+	// Hp bar
+	a = new Actor(this);
+	a->SetPosition(Vector3(-350.0f, -350.0f, 0.0f));
+	SpriteComponent* sc = new SpriteComponent(a);
+	sc->SetTexture(mRenderer->GetTexture("Assets/HealthBar.png"));
+	
+	// Radar
+	a = new Actor(this);
+	a->SetPosition(Vector3(380.0f, -270.0f, 0.0f));
+	a->SetScale(0.75f);
+	sc = new SpriteComponent(a);
+	sc->SetTexture(mRenderer->GetTexture("Assets/Radar.png"));
 }
 
 void Game::UnloadData()

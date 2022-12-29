@@ -271,7 +271,7 @@ bool Renderer::LoadShaders()
 		mScreenWidth,			// Width of view
 		mScreenHeight,			// Height of view
 		25.0f,					// Near plane distance
-		1000.0f					// Far plane distance
+		10000.0f				// Far plane distance
 	);
 	mMeshShader->SetMatrixUniform("uViewProj", mView * mProjection);
 	return true;
