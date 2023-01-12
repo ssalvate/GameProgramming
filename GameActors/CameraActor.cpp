@@ -38,11 +38,11 @@ void CameraActor::ActorInput(const uint8_t* keys)
 	}
 	if (keys[SDL_SCANCODE_A])
 	{
-		angularSpeed -= Math::TwoPi;
+		angularSpeed -= Math::TwoPi/2;
 	}
 	if (keys[SDL_SCANCODE_D])
 	{
-		angularSpeed += Math::TwoPi;
+		angularSpeed += Math::TwoPi/2;
 	}
 
 	mMoveComp->SetForwardSpeed(forwardSpeed);

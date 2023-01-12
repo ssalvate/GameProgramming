@@ -9,8 +9,9 @@ This project starts with fundamental concepts of game programming in 2D and move
 Demo projects are written to demonstrate the fundamentals learned.
 
 ## Progression
+_Note: image quality may be compressed for better load time of gifs_
 <details>
-<summary>Pong - Core real-time game concepts </summary>
+<summary>1. Pong - Core real-time game concepts </summary>
 <ul>
 <li> Game Loop </li>
 <li> Game Updating over time </li>
@@ -21,9 +22,10 @@ Demo projects are written to demonstrate the fundamentals learned.
 <img src="Assets/screenshots/ScreenRecord_Ch1_1.gif" style=" width:256.5px; height:200px">
 
 <details>
-<summary>Side Scroller - Game object representation + 2D grahics techniques</summary>
+<summary>2. Side Scroller - Game object representation + 2D grahics techniques</summary>
 <ul>
 <li>Game objects representation models</li>
+<li>Implement Actor-Component Model</li>>
 <li>Sprites</li>
 <li>Sprite animations</li>
 <li>Scrolling backgrounds</li>
@@ -37,7 +39,7 @@ Demo projects are written to demonstrate the fundamentals learned.
 </p>
 
 <details>
-<summary>Asteroids - Vectors and Basic Physics</summary>
+<summary>3. Asteroids - Vectors and Basic Physics</summary>
 <ul>
 <li> Vector math: Vectors and how they are used in games</li>
 <li>Basics of Newtonian physics</li>
@@ -49,7 +51,7 @@ Demo projects are written to demonstrate the fundamentals learned.
 <img src="Assets/screenshots/ScreenRecord_Ch3_1.gif" style=" width:256.5px; height:200px">
 
 <details>
-<summary>Asteroids - Convert previous demo from SDL graphics to OpenGL</summary>
+<summary>4. Asteroids - Convert previous demo from SDL graphics to OpenGL</summary>
 <li>Begin transition from 2D to 3D</li>
 <li>Drawing sprites - triangles(polygons) and vertex array objects</li>
 <li>Matrices and transformations: scale - rotation - translation</li>
@@ -59,6 +61,18 @@ Demo projects are written to demonstrate the fundamentals learned.
 </ul>
 </details>
 <img src="Assets/screenshots/ScreenRecord_Ch5_1.gif" style=" width:256.5px; height:200px">
+
+<details>
+<summary>5. 3D Graphics</summary>
+<li>3D transform matrices</li>
+<li>Euler angles and Quaternions</li>
+<li>Loading 3D models</li>
+<li>Drawing 3D meshes- View/projection matrices</li>
+<li>Z-buffering</li>
+<li>Lighting- light types + Phong shader</li>
+</ul>
+</details>
+<img src="Assets/screenshots/ScreenRecord_Ch6_1.gif" style=" width:256.5px; height:200px">
 
 ### Dependencies
 
