@@ -25,7 +25,7 @@ _Note: image quality may be compressed for better load time of gifs_
 <summary>2. Side Scroller - Game object representation + 2D grahics techniques</summary>
 <ul>
 <li>Game objects representation models</li>
-<li>Implement Actor-Component Model</li>>
+<li>Implement Actor-Component Model</li>
 <li>Sprites</li>
 <li>Sprite animations</li>
 <li>Scrolling backgrounds</li>

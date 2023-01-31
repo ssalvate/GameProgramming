@@ -42,6 +42,8 @@ private:
 
 	class Renderer* mRenderer;
 
+	class InputSystem* mInputSystem;
+
 	// Game-specific
 	class CameraActor* mCameraActor;
 };

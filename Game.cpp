@@ -3,6 +3,7 @@
 // Engine
 #include "Game.h"
 #include "Renderer.h"
+#include "InputSystem.h"
 // Actors
 #include "GameActors/Actor.h"
 #include "GameActors/PlaneActor.h"
@@ -37,6 +38,14 @@ bool Game::Initialize()
 		return false;
 	}
 
+	// Initialize input system
+	mInputSystem = new InputSystem();
+	if (!mInputSystem->Initialize())
+	{
+		SDL_Log("Failed to initialize input system");
+		return false;
+	}
+
 	// Init game objects
 	LoadData();
 
@@ -59,38 +68,51 @@ void Game::RunLoop()
 void Game::Shutdown()
 {
 	UnloadData();
-	if (mRenderer)
-	{
-		mRenderer->Shutdown();
-	}
+
+	if (mInputSystem) mInputSystem->Shutdown();
+	delete mInputSystem;
+
+	if (mRenderer)mRenderer->Shutdown();
+	delete mRenderer;
+
 	SDL_Quit();
 }
 
 
 void Game::ProcessInput()
 {
-	SDL_Event event;
 
-	// While there are still events in the queue
+	mInputSystem->PrepareForUpdate();
+
+	// SDL Pollevents loop
+	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
+		// Handle different event types here
 		switch (event.type)
 		{
-			// Handle different event types here
 		case SDL_QUIT: // Window click X
 			mIsRunning = false;
 			break;
 		}
 	}
 
-	// Get state of the keyboard
-	const Uint8* keyState = SDL_GetKeyboardState(NULL);
-	if (keyState[SDL_SCANCODE_ESCAPE] ) mIsRunning = false;
+	mInputSystem->Update();
+	const InputState& state = mInputSystem->GetState();
 
+	// Process any keys here as desired
+	if (state.Keyboard.GetKeyState(SDL_SCANCODE_ESCAPE)
+	== EReleased)
+	{
+		mIsRunning = false;
+	}
+
+	mUpdatingActors = true;
 	for (auto actor : mActors)
 	{
-		actor->ProcessInput(keyState);
+		actor->ProcessInput(state);
 	}
+	mUpdatingActors = false;
 }
 
 void Game::UpdateGame()

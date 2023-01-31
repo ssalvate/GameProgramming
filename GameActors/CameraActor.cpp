@@ -1,7 +1,8 @@
 #include "SDL_scancode.h"
 #include "CameraActor.h"
-#include "../Renderer.h"
 #include "../Game.h"
+#include "../Renderer.h"
+#include "../InputSystem.h"
 #include "../Components/MoveComponent.h"
 
 CameraActor::CameraActor(Game* game)
@@ -23,24 +24,25 @@ void CameraActor::UpdateActor(float deltaTime)
 	GetGame()->GetRenderer()->SetViewMatrix(view);
 }
 
-void CameraActor::ActorInput(const uint8_t* keys)
+void CameraActor::ActorInput(const struct InputState& state)
 {
 	float forwardSpeed = 0.0f;
 	float angularSpeed = 0.0f;
 	// wasd movement
-	if (keys[SDL_SCANCODE_W])
+	
+	if (state.Keyboard.GetKeyState(SDL_SCANCODE_W) == EHeld)
 	{
 		forwardSpeed += 150.0f;
 	}
-	if (keys[SDL_SCANCODE_S])
+	if (state.Keyboard.GetKeyState(SDL_SCANCODE_S) == EHeld)
 	{
 		forwardSpeed -= 150.0f;
 	}
-	if (keys[SDL_SCANCODE_A])
+	if (state.Keyboard.GetKeyState(SDL_SCANCODE_A) == EHeld)
 	{
 		angularSpeed -= Math::TwoPi/2;
 	}
-	if (keys[SDL_SCANCODE_D])
+	if (state.Keyboard.GetKeyState(SDL_SCANCODE_D) == EHeld)
 	{
 		angularSpeed += Math::TwoPi/2;
 	}
