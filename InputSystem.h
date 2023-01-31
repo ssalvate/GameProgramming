@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL_scancode.h>
+#include "Math.h"
 
 enum ButtonState
 {
@@ -26,10 +27,30 @@ private:
 	Uint8 mPrevState[SDL_NUM_SCANCODES];
 };
 
+class MouseState
+{
+public:
+	friend class InputSystem;
+
+	// For mouse position
+	const Vector2& GetPosition() const { return mMousePos; }
+
+	// For buttons
+	bool GetButtonValue(int button) const;
+	ButtonState GetButtonState(int button) const;
+private:
+	// Store mouse position
+	Vector2 mMousePos;
+	// Store button data
+	Uint32 mCurrButtons;
+	Uint32 mPrevButtons;
+};
+
 // Wrapper that contains current state of input
 struct InputState
 {
 	KeyboardState Keyboard;
+	MouseState Mouse;
 };
 
 class InputSystem

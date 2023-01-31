@@ -107,6 +107,11 @@ void Game::ProcessInput()
 		mIsRunning = false;
 	}
 
+	if (state.Mouse.GetButtonState(SDL_BUTTON_LEFT) == EPressed)
+	{
+		SDL_Log("Pressed left mouse");
+	}
+
 	mUpdatingActors = true;
 	for (auto actor : mActors)
 	{
